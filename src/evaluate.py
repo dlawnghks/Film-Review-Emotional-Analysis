@@ -23,3 +23,4 @@ def evaluate_model(test_loader, model, device):
     acc = accuracy_score(true_labels, predictions)
     print(f"Accuracy: {acc}")
     print(classification_report(true_labels, predictions))
+#

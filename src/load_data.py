@@ -29,3 +29,4 @@ if __name__ == "__main__":
     test_reviews, test_labels = load_data(test_dir)
     
     print(f"Loaded {len(train_reviews)} training reviews and {len(test_reviews)} test reviews.")
+#

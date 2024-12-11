@@ -42,24 +42,20 @@ def train_model(train_loader, model, optimizer, device, epochs=3):
         print(f"Epoch {epoch+1}, Loss: {total_loss/len(train_loader)}")
 
 if __name__ == "__main__":
-    # 데이터 로드 및 전처리
+
     train_dir = "data/aclImdb/train"
     train_reviews, train_labels = load_data(train_dir)
     train_encodings = preprocess_data(train_reviews)
 
-    # 데이터셋 및 데이터로더 생성
+
     train_dataset = SentimentDataset(train_encodings, train_labels)
     train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 
-    # 장치 설정
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # 모델 초기화 (classifier 가중치는 새로 초기화됨)
     model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
     model.to(device)
 
-    # 옵티마이저 초기화 (torch.optim.AdamW 사용)
     optimizer = AdamW(model.parameters(), lr=5e-5)
 
-    # 모델 학습
     train_model(train_loader, model, optimizer, device)

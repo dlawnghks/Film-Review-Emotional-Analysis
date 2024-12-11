@@ -15,3 +15,4 @@ def preprocess_data(reviews, tokenizer_name="bert-base-uncased", max_length=128)
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
     encodings = tokenizer(reviews, truncation=True, padding=True, max_length=max_length, return_tensors="pt")
     return encodings
+#
