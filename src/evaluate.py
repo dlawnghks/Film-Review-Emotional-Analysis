@@ -1,7 +1,5 @@
 from sklearn.metrics import accuracy_score, classification_report
 import torch
-from preprocess import preprocess_data
-from load_data import load_data
 
 def evaluate_model(test_loader, model, device):
     model.eval()
@@ -23,4 +21,3 @@ def evaluate_model(test_loader, model, device):
     acc = accuracy_score(true_labels, predictions)
     print(f"Accuracy: {acc}")
     print(classification_report(true_labels, predictions))
-#

@@ -1,18 +1,13 @@
-from transformers import AutoTokenizer
-
-def preprocess_data(reviews, tokenizer_name="bert-base-uncased", max_length=128):
+def preprocess_data(reviews, tokenizer, max_length=64):
     """
-    Preprocesses the reviews by tokenizing and padding them.
-    
+    Tokenizes and preprocesses the reviews.
+
     Args:
         reviews (list): List of review texts.
-        tokenizer_name (str): Pretrained tokenizer name.
-        max_length (int): Maximum sequence length.
-    
+        tokenizer (AutoTokenizer): Tokenizer for preprocessing.
+        max_length (int): Maximum token length.
+
     Returns:
-        encodings: Tokenized and padded reviews.
+        encodings: Tokenized reviews as tensors.
     """
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-    encodings = tokenizer(reviews, truncation=True, padding=True, max_length=max_length, return_tensors="pt")
-    return encodings
-#
+    return tokenizer(reviews, truncation=True, padding=True, max_length=max_length, return_tensors="pt")
