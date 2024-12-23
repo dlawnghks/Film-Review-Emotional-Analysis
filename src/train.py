@@ -53,7 +53,7 @@ if __name__ == "__main__":
     combined_reviews = english_reviews + korean_reviews
     combined_labels = english_labels + korean_labels
 
-    tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-tiny") 
+    tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-tiny")
     train_encodings = tokenizer(
         combined_reviews, truncation=True, padding=True, max_length=64, return_tensors="pt"
     )
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     train_loader = DataLoader(
         train_dataset,
-        batch_size=2,  
+        batch_size=1,  # 배치 크기 감소
         shuffle=True,
         collate_fn=data_collator,
     )
@@ -71,17 +71,17 @@ if __name__ == "__main__":
     print(f"Using device: {device}")
 
     model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-tiny", num_labels=2)
-    model.gradient_checkpointing_enable()  
+    model.gradient_checkpointing_enable()
     model.to(device)
-    torch.cuda.empty_cache() 
+    torch.cuda.empty_cache()  # GPU 메모리 캐시 초기화
 
-    optimizer = AdamW(model.parameters(), lr=2e-5)  
-    epochs = 10
+    optimizer = AdamW(model.parameters(), lr=2e-5)
+    epochs = 12
     num_training_steps = epochs * len(train_loader)
     scheduler = get_scheduler("linear", optimizer=optimizer, num_warmup_steps=10, num_training_steps=num_training_steps)
 
     loss_fn = CrossEntropyLoss()
-    scaler = GradScaler(init_scale=2.0**3)
+    scaler = GradScaler(init_scale=2.0**2)  # GradScaler 초기값 조정
 
     print("Starting training...")
     for epoch in range(epochs):
@@ -93,17 +93,21 @@ if __name__ == "__main__":
             batch = {key: val.to(device) for key, val in batch.items()}
             with autocast():
                 outputs = model(**batch)
-                loss = loss_fn(outputs.logits, batch["labels"]) / 4  
+                loss = loss_fn(outputs.logits, batch["labels"]) / 8  # Gradient Accumulation
 
             scaler.scale(loss).backward()
 
-            if (step + 1) % 4 == 0 or (step + 1) == len(train_loader):  
+            if (step + 1) % 8 == 0 or (step + 1) == len(train_loader):  # 8 스텝마다 업데이트
                 scaler.step(optimizer)
                 scaler.update()
                 optimizer.zero_grad()
                 scheduler.step()
 
-            total_loss += loss.item() * 4  
+            total_loss += loss.item() * 8
+
+            # GPU 메모리 캐시 정리
+            if step % 50 == 0:
+                torch.cuda.empty_cache()
 
         avg_loss = total_loss / len(train_loader)
         print(f"Epoch {epoch + 1}, Loss: {avg_loss}")
