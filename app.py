@@ -1,17 +1,20 @@
 from flask import Flask, request, render_template
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from googletrans import Translator
 
-# Flask 애플리케이션 생성
 app = Flask(__name__)
 
 # 모델 및 토크나이저 로드
-model_path = "saved_model_multilingual"
+model_path = "saved_model"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model.to(device)
 model.eval()
+
+# 번역기 초기화
+translator = Translator()
 
 # 감정 분석 함수
 def predict_sentiment(text):
@@ -24,15 +27,23 @@ def predict_sentiment(text):
         sentiment = "긍정적" if prediction == 1 else "부정적"
     return sentiment
 
-# 라우트 설정
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        user_input = request.form["review"]
-        prediction = predict_sentiment(user_input)
-        return render_template("index.html", user_input=user_input, prediction=prediction)
+        action = request.form.get("action", "")
+        user_input = request.form.get("review", "")
+
+        if action == "translate":
+            # 번역 작업
+            translated_text = translator.translate(user_input, src="auto", dest="en").text
+            return render_template("index.html", user_input=user_input, translated_text=translated_text)
+
+        elif action == "analyze":
+            # 감정 분석 작업
+            prediction = predict_sentiment(user_input)
+            return render_template("index.html", user_input=user_input, prediction=prediction)
+
     return render_template("index.html")
 
-# 서버 실행
 if __name__ == "__main__":
     app.run(debug=True)
