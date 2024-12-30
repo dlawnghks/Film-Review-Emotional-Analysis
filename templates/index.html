@@ -6,18 +6,31 @@
     <title>Sentiment Analysis</title>
 </head>
 <body>
-    <h1>Sentiment Analysis</h1>
-    <form method="post">
-        <label for="review">Enter your review:</label><br>
-        <textarea id="review" name="review" rows="4" cols="50" required></textarea><br><br>
-        <button type="submit">Analyze Sentiment</button>
-    </form>
+    <div class="container">
+        <h1>Sentiment Analysis</h1>
+        <form method="post">
+            <label for="review">Enter your review:</label><br>
+            <textarea id="review" name="review" rows="4" cols="50" required></textarea><br><br>
+            <button type="submit" name="action" value="translate">Translate</button>
+            <button type="submit" name="action" value="analyze">Analyze Sentiment</button>
+        </form>
 
-    {% if user_input %}
-        <h2>Review:</h2>
-        <p>{{ user_input }}</p>
-        <h2>Predicted Sentiment:</h2>
-        <p>{{ prediction }}</p>
-    {% endif %}
+        {% if user_input %}
+            <div class="result">
+                <h2>Review:</h2>
+                <p>{{ user_input }}</p>
+
+                {% if translated_text %}
+                    <h2>Translated Text:</h2>
+                    <p>{{ translated_text }}</p>
+                {% endif %}
+
+                {% if prediction %}
+                    <h2>Predicted Sentiment:</h2>
+                    <p>{{ prediction }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
