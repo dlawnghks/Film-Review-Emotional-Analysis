@@ -1,62 +1,148 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+/* Reset */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-.container {
-    width: 50%;
-    margin: 50px auto;
-    background: #fff;
+/* Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+/* Container Styles */
+.container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
     text-align: center;
+    overflow: hidden;
+}
+
+/* Header Styles */
+header {
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Main Styles */
+main .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+main .input-group label {
+    font-size: 1.1rem;
+    font-weight: bold;
     color: #333;
 }
 
-form {
-    margin-top: 20px;
-}
-
-textarea {
+main .input-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     resize: none;
-    font-size: 16px;
 }
 
-.button {
-    display: block;
-    width: 100%;
+/* Buttons Section */
+main .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-translate {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+.btn-translate:hover {
+    background-color: #ffb700;
+    transform: scale(1.05);
+}
+
+.btn-analyze {
     background-color: #007bff;
     color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
 }
 
-.button:hover {
+.btn-analyze:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
+/* Results Section */
 .result {
     margin-top: 30px;
-    background: #e8f5e9;
-    padding: 10px;
-    border: 1px solid #4caf50;
-    border-radius: 5px;
+    text-align: left;
 }
 
-.prediction {
-    font-weight: bold;
-    color: #4caf50;
+.result h2 {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.result-content h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.result-content p {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #555;
+    word-wrap: break-word;
+}
+
+.result-content p.positive {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.result-content p.negative {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 30px;
+    color: #aaa;
+    font-size: 0.9rem;
 }

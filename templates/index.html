@@ -4,33 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Sentiment Analysis</h1>
-        <form method="post">
-            <label for="review">Enter your review:</label><br>
-            <textarea id="review" name="review" rows="4" cols="50" required></textarea><br><br>
-            <button type="submit" name="action" value="translate">Translate</button>
-            <button type="submit" name="action" value="analyze">Analyze Sentiment</button>
-        </form>
+        <header>
+            <h1>🎥 Movie Review Sentiment Analysis</h1>
+            <p>Analyze the sentiment of movie reviews with advanced AI.</p>
+        </header>
+        <main>
+            <form method="post">
+                <div class="input-group">
+                    <label for="review">Enter your review:</label>
+                    <textarea id="review" name="review" rows="5" placeholder="Write your review here..." required></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" name="action" value="translate" class="btn btn-translate">🌐 Translate</button>
+                    <button type="submit" name="action" value="analyze" class="btn btn-analyze">📊 Analyze Sentiment</button>
+                </div>
+            </form>
 
-        {% if user_input %}
+            {% if user_input %}
             <div class="result">
-                <h2>Review:</h2>
-                <p>{{ user_input }}</p>
+                <h2>🔍 Analysis Result</h2>
+                <div class="result-content">
+                    <h3>Review:</h3>
+                    <p>{{ user_input }}</p>
 
-                {% if translated_text %}
-                    <h2>Translated Text:</h2>
-                    <p>{{ translated_text }}</p>
-                {% endif %}
+                    {% if translated_text %}
+                        <h3>Translated Text:</h3>
+                        <p>{{ translated_text }}</p>
+                    {% endif %}
 
-                {% if prediction %}
-                    <h2>Predicted Sentiment:</h2>
-                    <p>{{ prediction }}</p>
-                {% endif %}
+                    {% if prediction %}
+                        <h3>Predicted Sentiment:</h3>
+                        <p class="{{ 'positive' if prediction == '긍정적' else 'negative' }}">
+                            {{ prediction }}
+                        </p>
+                    {% endif %}
+                </div>
             </div>
-        {% endif %}
+            {% endif %}
+        </main>
+        <footer>
+            <p>by juhwan Lim © 2024</p>
+        </footer>
     </div>
 </body>
 </html>
